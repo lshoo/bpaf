@@ -397,8 +397,8 @@ mod complete_run;
 mod complete_shell;
 mod info;
 mod item;
-#[cfg(feature = "manpage")]
-mod manpage;
+// #[cfg(feature = "manpage")]
+//mod manpage;
 mod meta;
 mod meta_help;
 mod meta_usage;
