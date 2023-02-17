@@ -11,6 +11,7 @@ use bpaf::*;
 // At this point cmd_usage can be any parser that produces Cmd
 #[derive(Debug, Clone, Bpaf)]
 #[bpaf(options)]
+#[allow(dead_code)]
 enum Opts {
     Cmd(#[bpaf(external(cmd_usage))] Cmd),
 }
@@ -20,6 +21,7 @@ enum Opts {
 // defines the parser we are going to use later
 #[derive(Debug, Clone, Bpaf)]
 #[bpaf(options)]
+#[allow(dead_code)]
 struct Cmd {
     opt: bool,
 }
