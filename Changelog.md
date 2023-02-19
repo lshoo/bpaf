@@ -1,5 +1,11 @@
 # Change Log
 
+## bpaf [0.8.0] - Unreleased
+- `many` and `some` will now collect one result from a parser
+  that does not consume anything from an argument list allowing
+  for easier composition with parsers that consume from both
+  command line and environment variables
+
 ## bpaf [0.7.9], bpaf_derive [0.3.4] - 2023-02-14
 - `ParseFailure::exit_code`
 - A way to specify custom usage in derive macro
