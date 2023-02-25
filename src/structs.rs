@@ -784,15 +784,19 @@ where
         let mut comp_items = Vec::new();
 
         for (start, mut this_arg) in args.ranges() {
-            if let Ok(ok) = self.inner.eval(&mut this_arg) {
-                if start > 0 {
-                    this_arg.copy_usage_from(args, 0..start);
+            match self.inner.eval(&mut this_arg) {
+                Err(Error::Missing(_) | Error::Stdout(_)) => {
+                    #[cfg(feature = "autocomplete")]
+                    this_arg.swap_comps_with(&mut comp_items);
                 }
-                std::mem::swap(&mut this_arg, args);
-                return Ok(ok);
-            } else {
-                #[cfg(feature = "autocomplete")]
-                this_arg.swap_comps_with(&mut comp_items);
+
+                otherwise => {
+                    if start > 0 {
+                        this_arg.copy_usage_from(args, 0..start);
+                    }
+                    std::mem::swap(&mut this_arg, args);
+                    return otherwise;
+                }
             }
         }
 
