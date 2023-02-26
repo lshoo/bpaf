@@ -1407,7 +1407,10 @@ pub trait Parser<T> {
     where
         Self: Sized + Parser<T>,
     {
-        ParseAnywhere { inner: self }
+        ParseAnywhere {
+            inner: self,
+            catch: false,
+        }
     }
 
     // consume

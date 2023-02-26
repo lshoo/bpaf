@@ -773,6 +773,24 @@ impl<T> Parser<T> for ParseBox<T> {
 #[doc = include_str!("docs/anywhere.md")]
 pub struct ParseAnywhere<P> {
     pub(crate) inner: P,
+    pub(crate) catch: bool,
+}
+
+impl<P> ParseAnywhere<P> {
+    #[must_use]
+    /// Handle parse failures
+    ///
+    /// Can be useful to decide to skip parsing of some items on a command line
+    /// When parser succeeds - `catch` version would return a value as usual
+    /// if it fails - `catch` would restore all the consumed values and return None.
+    ///
+    /// There's several structures that implement this attribute: [`ParseOptional`], [`ParseMany`]
+    /// and [`ParseSome`], behavior should be identical for all of them.
+    #[doc = include_str!("docs/catch.md")]
+    pub fn catch(mut self) -> Self {
+        self.catch = true;
+        self
+    }
 }
 
 impl<P, T> Parser<T> for ParseAnywhere<P>
@@ -791,11 +809,13 @@ where
                 }
 
                 otherwise => {
-                    if start > 0 {
-                        this_arg.copy_usage_from(args, 0..start);
+                    if otherwise.is_ok() || !self.catch {
+                        if start > 0 {
+                            this_arg.copy_usage_from(args, 0..start);
+                        }
+                        std::mem::swap(&mut this_arg, args);
+                        return otherwise;
                     }
-                    std::mem::swap(&mut this_arg, args);
-                    return otherwise;
                 }
             }
         }
