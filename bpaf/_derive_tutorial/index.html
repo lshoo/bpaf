@@ -1,0 +1,265 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Using the library in derive style"><meta name="keywords" content="rust, rustlang, rust-lang, _derive_tutorial"><title>bpaf::_derive_tutorial - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module _derive_tutorial</a></h2><div class="sidebar-elems"></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">bpaf</a>::<wbr><a class="mod" href="#">_derive_tutorial</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/bpaf/_derive_tutorial.rs.html#1-286">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="using-the-library-in-derive-style"><a href="#using-the-library-in-derive-style">Using the library in derive style</a></h2><h2 id="about-examples"><a href="#about-examples">About examples</a></h2>
+<p>Most of the examples omit adding doc comments to the fields, to keep things clearer, you should do
+that when possible for better end user experience. Don’t forget to add <code>#[bpaf(options)]</code> for a top level
+structure that defines the option parser itself.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)] </span><span class="comment">// &lt;- important bit
+</span><span class="kw">struct </span>Config {
+    <span class="doccomment">/// number used by the program
+    </span>number: u32,
+}</code></pre></div>
+<p>In addition to examples in the documentation there’s a bunch more in the github repository:
+<a href="https://github.com/pacak/bpaf/tree/master/examples">https://github.com/pacak/bpaf/tree/master/examples</a></p>
+<h2 id="recommended-reading-order"><a href="#recommended-reading-order">Recommended reading order</a></h2>
+<p>Combinatoric and derive APIs share the documentation and most of the names, recommended reading order:</p>
+<ol>
+<li><a href="../macro.construct.html" title="construct!"><code>construct!</code></a> - what combinations are</li>
+<li><a href="../params/struct.NamedArg.html" title="NamedArg"><code>NamedArg</code></a>, <a href="../fn.positional.html" title="positional"><code>positional</code></a> and <a href="../fn.command.html" title="command"><code>command</code></a> - on consuming data</li>
+<li><a href="../trait.Parser.html" title="Parser"><code>Parser</code></a> - on transforming the data</li>
+<li><a href="../struct.OptionParser.html" title="OptionParser"><code>OptionParser</code></a> - on running the result</li>
+</ol>
+<h2 id="getting-started"><a href="#getting-started">Getting started</a></h2>
+<ol>
+<li>
+<p>To use derive style API you need to enable <code>&quot;derive&quot;</code> feature for <code>bpaf</code>, <strong>by default it’s not
+enabled</strong>.</p>
+</li>
+<li>
+<p>Define primitive parsers if you want to use any. While it’s possible to define most of them
+in derive style - doing complex parsing or validation is often easier in combinatoric style</p>
+</li>
+<li>
+<p>Define types used to derive parsers, structs correspond to <em>AND</em> combination and require for
+all the fields to have a value, enums to <em>OR</em> combinations and require (and consume) all the
+values for one branch only.</p>
+</li>
+<li>
+<p>Add annotations to the top level of a struct if needed, there’s several to choose from and
+you can specify several of them. For this annotation ordering doesn’t matter.</p>
+<ul>
+<li><h4 id="generated-function-name-generate"><a href="#generated-function-name-generate">Generated function name: <code>generate</code></a></h4>
+<p>Unlike usual derive macro <code>bpaf_derive</code> generates a function with a name
+derived from a struct name by transforming it from <code>CamelCase</code> to <code>snake_case</code>. <code>generate</code>
+annotation allows to override a name for the function</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(generate(make_config))] </span><span class="comment">// function name is now make_config()
+</span><span class="kw">pub struct </span>Config {
+    <span class="kw">pub </span>flag: bool
+}</code></pre></div>
+</li>
+<li><h4 id="generated-function-visibility-private"><a href="#generated-function-visibility-private">Generated function visibility: <code>private</code></a></h4>
+<p>By default <code>bpaf</code> uses the same visibility as the datatype,
+<code>private</code> makes it module private:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(private)] </span><span class="comment">// config() is now module private
+</span><span class="kw">pub struct </span>Config {
+    <span class="kw">pub </span>flag: bool
+}</code></pre></div>
+</li>
+<li><h4 id="generated-function-types-command-options"><a href="#generated-function-types-command-options">Generated function types: <code>command</code>, <code>options</code></a></h4>
+<p>By default <code>bpaf_derive</code> would generate a function that generates a regular <a href="../trait.Parser.html" title="Parser"><code>Parser</code></a>
+it’s possible instead to turn it into a
+<a href="../fn.command.html" title="command"><code>command</code></a> with <code>command</code> annotation or into a top level <a href="../struct.OptionParser.html" title="OptionParser"><code>OptionParser</code></a> with <code>options</code>
+annotation.
+Those annotations are mutually exclusive. <code>options</code> annotation takes an optional argument
+to use for <a href="../batteries/fn.cargo_helper.html" title="cargo_helper"><code>cargo_helper</code></a>, <code>command</code> annotation takes an optional argument to
+override a command name.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">pub struct </span>Flag { <span class="comment">// impl Parser by default
+    </span><span class="kw">pub </span>flag: bool
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(command)]
+</span><span class="kw">pub struct </span>Make { <span class="comment">// generates a command &quot;make&quot;
+    </span><span class="kw">pub </span>level: u32,
+}
+
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)] </span><span class="comment">// config() is now OptionParser
+</span><span class="kw">pub struct </span>Config {
+    <span class="kw">pub </span>flag: bool
+}</code></pre></div>
+</li>
+<li><h4 id="specify-version-for-generated-command-version"><a href="#specify-version-for-generated-command-version">Specify version for generated command: <code>version</code></a></h4>
+<p>By default <code>bpaf_derive</code> embedds no version information. With <code>version</code> with no argument
+results in using version from <code>CARGO_PKG_VERSION</code> env variable (specified by cargo on
+compile time, usually originates from <code>Cargo.toml</code>), <code>version</code> with argument results in
+using tht specific version - can be string literal or static string expression.
+Only makes sense for <code>command</code> and <code>options</code> annotations. For more information see
+<a href="../struct.OptionParser.html#method.version"><code>version</code></a>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options, version(<span class="string">&quot;3.1415&quot;</span>))] </span><span class="comment">// --version is now 3.1415
+</span><span class="kw">pub struct </span>Config {
+    <span class="kw">pub </span>flag: bool
+}</code></pre></div>
+<ul>
+<li><h4 id="fallback-value-if-all-parsers-fails-fallback"><a href="#fallback-value-if-all-parsers-fails-fallback">Fallback value if all parsers fails: <code>fallback</code></a></h4></li>
+</ul>
+<p>You can add a fallback value to use if all the values required are missing.
+See <a href="../params/struct.NamedArg.html#method.req_flag"><code>req_flag</code></a> examples.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Add annotations to individual fields. Structure for annotation for individual fields
+is similar to how you would write the same code with combinatoric API with exception
+of <code>external</code> and usually looks something like this:</p>
+<p><code>((&lt;naming&gt; &lt;consumer&gt;) | &lt;external&gt;) &lt;postprocessing&gt;</code></p>
+<ul>
+<li>
+<p><code>naming</code> section corresponds to <a href="../fn.short.html" title="short"><code>short</code></a>,  <a href="../fn.long.html" title="long"><code>long</code></a> and <a href="../fn.env.html"><code>env</code></a>. <code>short</code> takes an optional
+character literal as a parameter, <code>long</code> takes an optional string, <code>env</code> takes an
+expression of type <code>&amp;'static str</code> as a parameter - could be a string literal or a
+constant.</p>
+<ul>
+<li>
+<p>If parameter for <code>short</code>/<code>long</code> is parameter isn’t present it’s derived from the field
+name: first character and a whole name respectively.</p>
+</li>
+<li>
+<p>If either of <code>short</code> or <code>long</code> is present - <code>bpaf_derive</code> would not add the other one.</p>
+</li>
+<li>
+<p>If neither is present - <code>bpaf_derive</code> would add a <code>long</code> one.</p>
+</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">const </span>DB: <span class="kw-2">&amp;</span>str = <span class="string">&quot;top_secret_database&quot;</span>;
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">pub struct </span>Config {
+   <span class="kw">pub </span>flag_1: bool,     <span class="comment">// no annotation: --flag_1
+
+   </span><span class="attr">#[bpaf(short)]
+   </span><span class="kw">pub </span>flag_2: bool,     <span class="comment">// explicit short suppresses long: -f
+
+   </span><span class="attr">#[bpaf(short(<span class="string">&#39;z&#39;</span>))]
+   </span><span class="kw">pub </span>flag_3: bool,     <span class="comment">// explicit short with custom letter: -z
+
+   </span><span class="attr">#[bpaf(short, long)]
+   </span><span class="kw">pub </span>deposit: bool,    <span class="comment">// explicit short and long: -d --deposit
+
+   </span><span class="attr">#[bpaf(env(DB))]
+   </span><span class="kw">pub </span>database: String, <span class="comment">// --database + env variable from DB constant
+
+   </span><span class="attr">#[bpaf(env(<span class="string">&quot;USER&quot;</span>))]  </span><span class="comment">// --user + env variable &quot;USER&quot;
+   </span><span class="kw">pub </span>user: String,
+}</code></pre></div>
+</li>
+<li>
+<p><code>consumer</code> section corresponds to <a href="../params/struct.NamedArg.html#method.argument"><code>argument</code></a>, <a href="../fn.positional.html" title="positional"><code>positional</code></a>,
+<a href="../params/struct.NamedArg.html#method.flag"><code>flag</code></a>, <a href="../params/struct.NamedArg.html#method.switch"><code>switch</code></a> and <a href="../fn.any.html" title="any"><code>any</code></a>.</p>
+<ul>
+<li>With no consumer annotations <code>bpaf_derive</code> parses tuple structs (<code>struct Config(String)</code>)
+as positional items, but it’s possible to override it by giving it a name:</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">struct </span>Opt(PathBuf); <span class="comment">// stays positional
+
+</span><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">struct </span>Config(<span class="attr">#[bpaf(long(<span class="string">&quot;input&quot;</span>))] </span>PathBuf); <span class="comment">// turns into a named argument</span></code></pre></div>
+<ul>
+<li>
+<p><code>bpaf_derive</code> handles fields of type <code>Option&lt;Foo&gt;</code> with <a href="../trait.Parser.html#method.optional"><code>optional</code></a>
+and <code>Vec&lt;Foo&gt;</code> with <a href="../trait.Parser.html#method.many"><code>many</code></a>, see <code>postprocessing</code> for more details.</p>
+</li>
+<li>
+<p><code>bpaf_derive</code> handles <code>bool</code> fields with <a href="../params/struct.NamedArg.html#method.switch"><code>switch</code></a>,
+<code>()</code> with <a href="../params/struct.NamedArg.html#method.req_flag"><code>req_flag</code></a>, <a href="https://doc.rust-lang.org/1.68.0/std/ffi/os_str/struct.OsString.html" title="OsString"><code>OsString</code></a> and <a href="https://doc.rust-lang.org/1.68.0/std/path/struct.PathBuf.html" title="PathBuf"><code>PathBuf</code></a> are parsed from
+<code>OsString</code> and anything else with <a href="https://doc.rust-lang.org/1.68.0/core/str/traits/trait.FromStr.html" title="FromStr"><code>FromStr</code></a> trait. See documentation for
+<a href="../params/struct.NamedArg.html#method.argument"><code>argument</code></a> and <a href="../fn.positional.html" title="positional"><code>positional</code></a> for more details.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>If <code>external</code> is present - it usually serves function of <code>naming</code> and <code>consumer</code>, allowing
+more for <code>postprocessing</code> annotations after it. Takes an optional parameter - a function
+name to call, if not present - <code>bpaf_derive</code> uses field name for this purpose.
+Functions should return impl <a href="../trait.Parser.html" title="Parser"><code>Parser</code></a> and you can either declare them manually
+or derive with <code>Bpaf</code> macro. <code>external</code> fields are going to ignore any doc comments for
+command line interface purposes.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">fn </span>verbosity() -&gt; <span class="kw">impl </span>Parser&lt;usize&gt; {
+    short(<span class="string">&#39;v&#39;</span>)
+        .help(<span class="string">&quot;vebosity, can specify multiple times&quot;</span>)
+        .req_flag(())
+        .many()
+        .map(|x| x.len())
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">pub struct </span>Username {
+    <span class="kw">pub </span>user: String
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">pub struct </span>Config {
+   <span class="attr">#[bpaf(external)]
+   </span><span class="kw">pub </span>verbosity: usize,      <span class="comment">// implicit name - &quot;verbosity&quot;
+
+   </span><span class="attr">#[bpaf(external(username))]
+   </span><span class="kw">pub </span>custom_user: Username, <span class="comment">// explicit name - &quot;username&quot;
+</span>}</code></pre></div>
+</li>
+<li>
+<p><code>postprocessing</code> - various methods from <a href="../trait.Parser.html" title="Parser"><code>Parser</code></a> trait, order matters, most of them are
+taken literal, see documentation for the trait for more details. <code>bpaf_derive</code> automatically
+uses <a href="../trait.Parser.html#method.many"><code>many</code></a> and <a href="../trait.Parser.html#method.optional"><code>optional</code></a> to handle <code>Vec&lt;T&gt;</code> and
+<code>Option&lt;T&gt;</code> fields respectively.</p>
+<p>Any operation that can change the type (such as <a href="../trait.Parser.html#method.parse"><code>parse</code></a> or <a href="../trait.Parser.html#method.map"><code>map</code></a>)
+for disables this logic for the field and also requires to specify the consumer:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">struct </span>Options {
+    <span class="attr">#[bpaf(argument::&lt;u32&gt;(<span class="string">&quot;NUM&quot;</span>), many)]
+    </span>numbers: Vec&lt;u32&gt;
+}</code></pre></div>
+</li>
+<li>
+<p>field-less enum variants obey slightly different set of rules, see
+<a href="../params/struct.NamedArg.html#method.req_flag"><code>req_flag</code></a> for more details.</p>
+</li>
+<li>
+<p>any constructor in <code>enum</code> can have <code>skip</code> annotation - <code>bpaf_derive</code>
+would ignore them when generating code:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">enum </span>Decision {
+    Yes,
+    No,
+    <span class="attr">#[bpaf(skip)]
+    </span>Maybe
+}
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>Add documentation for help messages.
+<code>bpaf_derive</code> generates help messages from doc comments, it skips single empty lines and stops
+processing after double empty line:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+</span><span class="kw">pub struct </span>Username {
+    <span class="doccomment">/// this is a part of a help message
+    ///
+    /// so is this
+    ///
+    ///
+    /// but this isn&#39;t
+    </span><span class="kw">pub </span>user: String
+}</code></pre></div>
+</li>
+<li>
+<p>Add <a href="../struct.OptionParser.html#method.check_invariants"><code>check_invariants</code></a> to your test code.</p>
+</li>
+</ol>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

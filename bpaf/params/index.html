@@ -1,0 +1,527 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Tools to define primitive parsers"><meta name="keywords" content="rust, rustlang, rust-lang, params"><title>bpaf::params - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module params</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">bpaf</a>::<wbr><a class="mod" href="#">params</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/bpaf/params.rs.html#1-1030">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Tools to define primitive parsers</p>
+<h2 id="ways-to-consume-data"><a href="#ways-to-consume-data">Ways to consume data</a></h2><h3 id="flag"><a href="#flag">Flag</a></h3>
+<ul>
+<li><a href="struct.NamedArg.html#method.flag"><code>flag</code></a> - a string that consists of two dashes (<code>--flag</code>) and a name and a single
+dash and a single character (<code>-f</code>) created with <a href="struct.NamedArg.html#method.long"><code>long</code></a> and <a href="struct.NamedArg.html#method.short"><code>short</code></a>
+respectively. Depending if this name is present or absent on the command line
+primitive flag parser produces one of two values. User can combine several short flags in a single
+invocation: <code>-a -b -c</code> is the same as <code>-abc</code>.</li>
+</ul>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    decision: Decision,
+}
+
+<span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub enum </span>Decision {
+    Yes,
+    No,
+}
+
+<span class="kw">fn </span>parse_decision() -&gt; <span class="kw">impl </span>Parser&lt;Decision&gt; {
+    long(<span class="string">&quot;decision&quot;</span>)
+        .help(<span class="string">&quot;Positive decision&quot;</span>)
+        .flag(Decision::Yes, Decision::No)
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>decision = parse_decision();
+    <span class="macro">construct!</span>(Options { decision }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="attr">#[bpaf(flag(Decision::Yes, Decision::No))]
+    </span>decision: Decision,
+}
+
+<span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub enum </span>Decision {
+    Yes,
+    No,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Presense of a long name is decoded into <code>Yes</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app --decision
+Options { decision: Yes }
+</code></pre></div>
+<p>Absense is <code>No</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Options { decision: No }
+</code></pre></div></details>
+<h3 id="required-flag"><a href="#required-flag">Required flag</a></h3>
+<p>Similar to <code>flag</code>, but instead of falling back to the second value required flag parser would
+fail. Mostly useful in combination with other parsers, created with <a href="struct.NamedArg.html#method.req_flag" title="NamedArg::req_flag"><code>NamedArg::req_flag</code></a>.</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    decision: Decision,
+}
+
+<span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub enum </span>Decision {
+    On,
+    Off,
+    Undecided,
+}
+
+<span class="comment">// user can specify either --on or --off, parser would fallback to `Undecided`
+</span><span class="kw">fn </span>parse_decision() -&gt; <span class="kw">impl </span>Parser&lt;Decision&gt; {
+    <span class="kw">let </span>on = long(<span class="string">&quot;on&quot;</span>).help(<span class="string">&quot;Positive decision&quot;</span>).req_flag(Decision::On);
+    <span class="kw">let </span>off = long(<span class="string">&quot;off&quot;</span>)
+        .help(<span class="string">&quot;Negative decision&quot;</span>)
+        .req_flag(Decision::Off);
+    <span class="macro">construct!</span>([on, off]).fallback(Decision::Undecided)
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>decision = parse_decision();
+    <span class="macro">construct!</span>(Options { decision }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="attr">#[bpaf(external)]
+    </span>decision: Decision,
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(fallback(Decision::Undecided))]
+</span><span class="kw">pub enum </span>Decision {
+    <span class="doccomment">/// Positive decision
+    </span>On,
+    <span class="doccomment">/// Negative decision
+    </span>Off,
+    <span class="attr">#[bpaf(skip)]
+    </span>Undecided,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>This example implements a tri-state switch: wether decision was made
+positive, negative or not at all. Alternative implementation can use
+<a href="../trait.Parser.html#method.optional"><code>optional</code></a> and <code>None</code> to indicate “no decision” case.
+A case with positive decision:</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --on
+Options { decision: On }
+</code></pre></div>
+<p>A case with no decision:</p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Options { decision: Undecided }
+</code></pre></div>
+<p><code>--on</code> and <code>--off</code> are mutually exclusive:</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --on --off
+--off is not expected in this context: --off cannot be used at the same time as --on
+</code></pre></div>
+<p>help</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [--on | --off]
+
+Available options:
+        --on    Positive decision
+        --off   Negative decision
+    -h, --help  Prints help information
+</code></pre></div></details>
+<h3 id="switch"><a href="#switch">Switch</a></h3>
+<p>A special case of a flag that gets decoded into a <code>bool</code>, mostly serves as a convenient
+shortcut to <code>.flag(true, false)</code>. Created with <a href="struct.NamedArg.html#method.switch" title="NamedArg::switch"><code>NamedArg::switch</code></a>.</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    decision: bool,
+}
+
+<span class="kw">fn </span>parse_decision() -&gt; <span class="kw">impl </span>Parser&lt;bool&gt; {
+    long(<span class="string">&quot;decision&quot;</span>).help(<span class="string">&quot;Positive decision&quot;</span>).switch()
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>decision = parse_decision();
+    <span class="macro">construct!</span>(Options { decision }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    decision: bool,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Presense of a long name is decoded into <code>true</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app --decision
+Options { decision: true }
+</code></pre></div>
+<p>Absense is <code>false</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Options { decision: false }
+</code></pre></div></details>
+<h3 id="argument"><a href="#argument">Argument</a></h3>
+<p>A short or long <code>flag</code> followed by either a space or <code>=</code> and
+then by a string literal.  <code>-f foo</code>, <code>--flag bar</code> or <code>-o=-</code> are all valid argument examples. Note, string
+literal can’t start with <code>-</code> unless separated from the flag with <code>=</code>. For short flags value
+can follow immediately: <code>-fbar</code>.</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    value: isize,
+    shorty: u64,
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>value = long(<span class="string">&quot;value&quot;</span>).argument::&lt;isize&gt;(<span class="string">&quot;ARG&quot;</span>).fallback(<span class="number">100</span>);
+    <span class="comment">// in many cases rustc is able to deduct exact type for the argument
+    // you are trying to consume, alternatively you can always specify it
+    // with turbofish to `argument:`
+    // let shorty = short(&#39;s&#39;).argument::&lt;u64&gt;(&quot;ARG&quot;);
+    </span><span class="kw">let </span>shorty = short(<span class="string">&#39;s&#39;</span>).argument(<span class="string">&quot;ARG&quot;</span>);
+    <span class="macro">construct!</span>(Options { value, shorty }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="attr">#[bpaf(fallback(<span class="number">100</span>))]
+    </span>value: isize,
+    <span class="comment">// in many cases rustc is able to deduct exact type for the argument
+    // you are trying to consume, alternatively you can always specify it
+    // with turbofish to `argument:`
+    // #[bpaf(short, argument::&lt;u64&gt;(&quot;ARG&quot;))]
+    </span><span class="attr">#[bpaf(short, argument(<span class="string">&quot;ARG&quot;</span>))]
+    </span>shorty: u64,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Names for arguments could be short or long, and they can be parsed as mutiple different
+types, this example uses <code>isize</code> and <code>u64</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app --value 50 -s=18446744073709551615
+Options { value: 50, shorty: 18446744073709551615 }
+</code></pre></div>
+<p>Value can be separated from the flag by space, <code>=</code> or for short ones - be immediately adjacent</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --value=1 -s42
+Options { value: 1, shorty: 42 }
+</code></pre></div>
+<p>You can apply fallback and other transformation</p>
+<div class="example-wrap"><pre class="language-console"><code>% app -s0
+Options { value: 100, shorty: 0 }
+</code></pre></div>
+<p>But if there’s no fallback - the value is required</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --value 1
+Expected -s ARG, pass --help for usage information
+</code></pre></div>
+<p>Argument is required</p>
+<div class="example-wrap"><pre class="language-console"><code>% app -s
+-s requires an argument
+</code></pre></div></details>
+<h3 id="positional"><a href="#positional">Positional</a></h3>
+<p>A positional argument with no additonal name, for example in <code>vim main.rs</code> <code>main.rs</code>
+is a positional argument. Can’t start with <code>-</code>, created with <a href="../fn.positional.html" title="positional"><code>positional</code></a>.</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    coin: Coin,
+    file: PathBuf,
+    name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+}
+
+<span class="doccomment">/// A custom datatype that implements [`FromStr`]
+</span><span class="attr">#[derive(Debug, Clone, Copy)]
+</span><span class="kw">enum </span>Coin {
+    Heads,
+    Tails,
+}
+<span class="kw">impl </span>FromStr <span class="kw">for </span>Coin {
+    <span class="kw">type </span><span class="prelude-val">Err </span>= String;
+    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
+        <span class="kw">match </span>s {
+            <span class="string">&quot;heads&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Coin::Heads),
+            <span class="string">&quot;tails&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Coin::Tails),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;Expected &#39;heads&#39; or &#39;tails&#39;, got &#39;{}&#39;&quot;</span>, s)),
+        }
+    }
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>file = positional::&lt;PathBuf&gt;(<span class="string">&quot;FILE&quot;</span>).help(<span class="string">&quot;File to use&quot;</span>);
+    <span class="comment">// sometimes you can get away with not specifying type in positional&#39;s turbofish
+    </span><span class="kw">let </span>coin = long(<span class="string">&quot;coin&quot;</span>)
+        .help(<span class="string">&quot;Coin toss results&quot;</span>)
+        .argument::&lt;Coin&gt;(<span class="string">&quot;COIN&quot;</span>)
+        .fallback(Coin::Heads);
+    <span class="kw">let </span>name = positional::&lt;String&gt;(<span class="string">&quot;NAME&quot;</span>)
+        .help(<span class="string">&quot;Name to look for&quot;</span>)
+        .optional();
+    <span class="macro">construct!</span>(Options { coin, file, name }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="doccomment">/// Coin toss results
+    </span><span class="attr">#[bpaf(argument(<span class="string">&quot;COIN&quot;</span>), fallback(Coin::Heads))]
+    </span>coin: Coin,
+
+    <span class="doccomment">/// File to use
+    </span><span class="attr">#[bpaf(positional::&lt;PathBuf&gt;(<span class="string">&quot;FILE&quot;</span>))]
+    </span>file: PathBuf,
+    <span class="doccomment">/// Name to look for
+    </span><span class="attr">#[bpaf(positional(<span class="string">&quot;NAME&quot;</span>))]
+    </span>name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+}
+
+<span class="doccomment">/// A custom datatype that implements [`FromStr`]
+</span><span class="attr">#[derive(Debug, Clone, Copy)]
+</span><span class="kw">enum </span>Coin {
+    Heads,
+    Tails,
+}
+<span class="kw">impl </span>FromStr <span class="kw">for </span>Coin {
+    <span class="kw">type </span><span class="prelude-val">Err </span>= String;
+    <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
+        <span class="kw">match </span>s {
+            <span class="string">&quot;heads&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Coin::Heads),
+            <span class="string">&quot;tails&quot; </span>=&gt; <span class="prelude-val">Ok</span>(Coin::Tails),
+            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;Expected &#39;heads&#39; or &#39;tails&#39;, got &#39;{}&#39;&quot;</span>, s)),
+        }
+    }
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Positionals are consumed left to right, one at a time, no skipping unless the value is optional</p>
+<div class="example-wrap"><pre class="language-console"><code>% app main.rs
+Options { coin: Heads, file: &quot;main.rs&quot;, name: None }
+</code></pre></div>
+<p>Both positionals are present</p>
+<div class="example-wrap"><pre class="language-console"><code>% app main.rs hello
+Options { coin: Heads, file: &quot;main.rs&quot;, name: Some(&quot;hello&quot;) }
+</code></pre></div>
+<p>You can consume items of any type that implements <code>FromStr</code>.</p>
+<div class="example-wrap"><pre class="language-console"><code>% app main.rs --coin tails
+Options { coin: Tails, file: &quot;main.rs&quot;, name: None }
+</code></pre></div>
+<p>Only <code>name</code> is optional in this example, not specifying <code>file</code> is a failure</p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Expected &lt;FILE&gt;, pass --help for usage information
+</code></pre></div>
+<p>And usage information</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [--coin COIN] &lt;FILE&gt; [&lt;NAME&gt;]
+
+Available positional items:
+    &lt;FILE&gt;  File to use
+    &lt;NAME&gt;  Name to look for
+
+Available options:
+        --coin &lt;COIN&gt;  Coin toss results
+    -h, --help         Prints help information
+</code></pre></div></details>
+<h3 id="any"><a href="#any">Any</a></h3>
+<p>Also a positional argument with no additional name, but unlike <a href="../fn.positional.html" title="positional"><code>positional</code></a> itself, <a href="../fn.any.html" title="any"><code>any</code></a>
+isn’t restricted to positional looking structure and would consume any items as they appear on
+a command line. Can be useful to collect anything unused to pass to other applications.</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    turbo: bool,
+    rest: Vec&lt;OsString&gt;,
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>turbo = short(<span class="string">&#39;t&#39;</span>)
+        .long(<span class="string">&quot;turbo&quot;</span>)
+        .help(<span class="string">&quot;Engage the turbo mode&quot;</span>)
+        .switch();
+    <span class="kw">let </span>rest = any::&lt;OsString&gt;(<span class="string">&quot;REST&quot;</span>)
+        .help(<span class="string">&quot;app will pass anything unused to a child process&quot;</span>)
+        .guard(|x| x != <span class="string">&quot;--help&quot;</span>, <span class="string">&quot;keep help&quot;</span>)
+        .many();
+    <span class="macro">construct!</span>(Options { turbo, rest }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="attr">#[bpaf(short, long)]
+    </span><span class="doccomment">/// Engage the turbo mode
+    </span>turbo: bool,
+    <span class="attr">#[bpaf(any(<span class="string">&quot;REST&quot;</span>), guard(not_help, <span class="string">&quot;keep help&quot;</span>), many)]
+    </span><span class="doccomment">/// app will pass anything unused to a child process
+    </span>rest: Vec&lt;OsString&gt;,
+}
+
+<span class="kw">fn </span>not_help(s: <span class="kw-2">&amp;</span>OsString) -&gt; bool {
+    s != <span class="string">&quot;--help&quot;
+</span>}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Capture <code>--turbo</code> flag for internal use and return everything else as is so it can be passed
+to some other program. Anything except for <code>--turbo</code> here and in following examples is
+consumed by <code>any</code></p>
+<div class="example-wrap"><pre class="language-console"><code>% app --turbo git commit -m &quot;hello world&quot;
+Options { turbo: true, rest: [&quot;git&quot;, &quot;commit&quot;, &quot;-m&quot;, &quot;hello world&quot;] }
+</code></pre></div>
+<p>Or just capture and return everything</p>
+<div class="example-wrap"><pre class="language-console"><code>% app git commit -m &quot;hello world&quot;
+Options { turbo: false, rest: [&quot;git&quot;, &quot;commit&quot;, &quot;-m&quot;, &quot;hello world&quot;] }
+</code></pre></div>
+<p>Doesn’t have to be in order either</p>
+<div class="example-wrap"><pre class="language-console"><code>% app git commit -m=&quot;hello world&quot; --turbo
+Options { turbo: true, rest: [&quot;git&quot;, &quot;commit&quot;, &quot;-m=hello world&quot;] }
+</code></pre></div>
+<p>You can keep <code>--help</code> working, but you need to add extra <code>guard</code> for that</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --turbo --help
+Usage: [-t] &lt;REST&gt;...
+
+Available positional items:
+    &lt;REST&gt;  app will pass anything unused to a child process
+
+Available options:
+    -t, --turbo  Engage the turbo mode
+    -h, --help   Prints help information
+</code></pre></div></details>
+<h3 id="command"><a href="#command">Command</a></h3>
+<p>A command defines a starting point for an independent subparser. Name must be a valid utf8
+string. For example <code>cargo build</code> invokes command <code>&quot;build&quot;</code> and after <code>&quot;build&quot;</code> <code>cargo</code>
+starts accepting values it won’t accept otherwise</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Cmd {
+    flag: bool,
+    arg: usize,
+}
+
+<span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    flag: bool,
+    cmd: Cmd,
+}
+
+<span class="kw">fn </span>cmd() -&gt; <span class="kw">impl </span>Parser&lt;Cmd&gt; {
+    <span class="kw">let </span>flag = long(<span class="string">&quot;flag&quot;</span>)
+        .help(<span class="string">&quot;This flag is specific to command&quot;</span>)
+        .switch();
+    <span class="kw">let </span>arg = long(<span class="string">&quot;arg&quot;</span>).argument::&lt;usize&gt;(<span class="string">&quot;ARG&quot;</span>);
+    <span class="macro">construct!</span>(Cmd { flag, arg })
+        .to_options()
+        .descr(<span class="string">&quot;Command to do something&quot;</span>)
+        .command(<span class="string">&quot;cmd&quot;</span>)
+        .help(<span class="string">&quot;Command to do something&quot;</span>)
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>flag = long(<span class="string">&quot;flag&quot;</span>)
+        .help(<span class="string">&quot;This flag is specific to the outer layer&quot;</span>)
+        .switch();
+    <span class="macro">construct!</span>(Options { flag, cmd() }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(command)]
+</span><span class="doccomment">/// Command to do something
+</span><span class="kw">pub struct </span>Cmd {
+    <span class="doccomment">/// This flag is specific to command
+    </span>flag: bool,
+    arg: usize,
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="doccomment">/// This flag is specific to the outer layer
+    </span>flag: bool,
+    <span class="attr">#[bpaf(external)]
+    </span>cmd: Cmd,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>In this example there’s only one command and it is required, so is the argument inside of it</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --arg 42
+Options { flag: false, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>If you don’t specify this command - parsing will fail</p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Expected COMMAND ..., pass --help for usage information
+</code></pre></div>
+<p>You can have the same flag names inside and outside of the command, but it might be confusing
+for the end user. This example enables the outer flag</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --flag cmd --arg 42
+Options { flag: true, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>And this one - both inside and outside</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --flag cmd --arg 42 --flag
+Options { flag: true, cmd: Cmd { flag: true, arg: 42 } }
+</code></pre></div>
+<p>And that’s the confusing part - unless you add context restrictions with
+<a href="../trait.Parser.html#method.adjacent"><code>adjacent</code></a> and parse command first - outer flag wins.
+So it’s best not to mix names on different levels</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --arg 42 --flag
+Options { flag: true, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>Commands show up on both outer level help</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [--flag] COMMAND ...
+
+Available options:
+        --flag  This flag is specific to the outer layer
+    -h, --help  Prints help information
+
+Available commands:
+    cmd  Command to do something
+</code></pre></div>
+<p>As well as showing their own help</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --help
+Command to do something
+
+Usage: [--flag] --arg ARG
+
+Available options:
+        --flag       This flag is specific to command
+        --arg &lt;ARG&gt;
+    -h, --help       Prints help information
+</code></pre></div></details>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.NamedArg.html" title="bpaf::params::NamedArg struct">NamedArg</a></div><div class="item-right docblock-short">A named thing used to create <a href="struct.NamedArg.html#method.flag"><code>flag</code></a>, <a href="struct.NamedArg.html#method.switch"><code>switch</code></a> or
+<a href="struct.NamedArg.html#method.argument"><code>argument</code></a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ParseAny.html" title="bpaf::params::ParseAny struct">ParseAny</a></div><div class="item-right docblock-short">Parse the next available item on a command line with no restrictions, created with <a href="../fn.any.html" title="any"><code>any</code></a>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ParseArgument.html" title="bpaf::params::ParseArgument struct">ParseArgument</a></div><div class="item-right docblock-short">Parser for a named argument, created with <a href="struct.NamedArg.html#method.argument"><code>argument</code></a>.</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ParseCommand.html" title="bpaf::params::ParseCommand struct">ParseCommand</a></div><div class="item-right docblock-short">Builder structure for the <a href="../fn.command.html" title="command"><code>command</code></a></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ParsePositional.html" title="bpaf::params::ParsePositional struct">ParsePositional</a></div><div class="item-right docblock-short">Parse a positional item, created with <a href="../fn.positional.html" title="positional"><code>positional</code></a></div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.any.html" title="bpaf::params::any fn">any</a></div><div class="item-right docblock-short">Take next unconsumed item on the command line as raw <a href="https://doc.rust-lang.org/1.68.0/alloc/string/struct.String.html" title="String"><code>String</code></a> or <a href="https://doc.rust-lang.org/1.68.0/std/ffi/os_str/struct.OsString.html" title="OsString"><code>OsString</code></a></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.command.html" title="bpaf::params::command fn">command</a></div><div class="item-right docblock-short">Subcommand parser</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.env.html" title="bpaf::params::env fn">env</a></div><div class="item-right docblock-short">Environment variable fallback</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.long.html" title="bpaf::params::long fn">long</a></div><div class="item-right docblock-short">A flag/switch/argument that has a long name</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.positional.html" title="bpaf::params::positional fn">positional</a></div><div class="item-right docblock-short">Positional argument in utf8 (<code>String</code>) encoding</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.short.html" title="bpaf::params::short fn">short</a></div><div class="item-right docblock-short">A flag/switch/argument that has a short name</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

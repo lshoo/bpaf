@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`Xorg(1)`: `Xorg +xinerama +extension name`"><meta name="keywords" content="rust, rustlang, rust-lang, xorg"><title>bpaf::_unusual::xorg - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module xorg</a></h2><div class="sidebar-elems"></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../../index.html">bpaf</a>::<wbr><a href="../index.html">_unusual</a>::<wbr><a class="mod" href="#">xorg</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../../src/bpaf/_unusual.rs.html#21">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h3 id="xorg1-xorg-xinerama-extension-name"><a href="#xorg1-xorg-xinerama-extension-name"><code>Xorg(1)</code>: <code>Xorg +xinerama +extension name</code></a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bpaf::<span class="kw-2">*</span>;
+<span class="attr">#[derive(Debug, Clone)]
+#[allow(dead_code)]
+</span><span class="kw">pub struct </span>Options {
+    turbo: bool,
+    backing: bool,
+    xinerama: bool,
+    extensions: Vec&lt;(String, bool)&gt;,
+}
+
+<span class="kw">fn </span>toggle_options(name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, help: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="kw">impl </span>Parser&lt;bool&gt; {
+    any::&lt;String&gt;(name)
+        .help(help)
+        .parse(<span class="kw">move </span>|s| {
+            <span class="kw">let </span>(state, cur_name) = <span class="kw">if let </span><span class="prelude-val">Some</span>(rest) = s.strip_prefix(<span class="string">&#39;+&#39;</span>) {
+                (<span class="bool-val">true</span>, rest)
+            } <span class="kw">else if let </span><span class="prelude-val">Some</span>(rest) = s.strip_prefix(<span class="string">&#39;-&#39;</span>) {
+                (<span class="bool-val">false</span>, rest)
+            } <span class="kw">else </span>{
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;{} is not a toggle option&quot;</span>, s));
+            };
+            <span class="kw">if </span>cur_name != name {
+                <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;{} is not a known toggle option name&quot;</span>, cur_name))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Ok</span>(state)
+            }
+        })
+        .anywhere()
+}
+
+<span class="kw">fn </span>extension() -&gt; <span class="kw">impl </span>Parser&lt;(String, bool)&gt; {
+    <span class="kw">let </span>on = any::&lt;String&gt;(<span class="string">&quot;+ext&quot;</span>)
+        .help(<span class="string">&quot;enable ext &lt;EXT&gt;&quot;</span>)
+        .parse::&lt;<span class="kw">_</span>, <span class="kw">_</span>, String&gt;(|s| {
+            <span class="kw">if </span>s == <span class="string">&quot;+ext&quot; </span>{
+                <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(String::new())
+            }
+        });
+    <span class="kw">let </span>off = any::&lt;String&gt;(<span class="string">&quot;-ext&quot;</span>)
+        .help(<span class="string">&quot;disable ext &lt;EXT&gt;&quot;</span>)
+        .parse::&lt;<span class="kw">_</span>, <span class="kw">_</span>, String&gt;(|s| {
+            <span class="kw">if </span>s == <span class="string">&quot;-ext&quot; </span>{
+                <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(String::new())
+            }
+        });
+
+    <span class="kw">let </span>state = <span class="macro">construct!</span>([on, off]);
+    <span class="kw">let </span>name = positional::&lt;String&gt;(<span class="string">&quot;EXT&quot;</span>).hide();
+    <span class="macro">construct!</span>(state, name).map(|(a, b)| (b, a)).anywhere()
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>backing = toggle_options(<span class="string">&quot;backing&quot;</span>, <span class="string">&quot;Backing status&quot;</span>).fallback(<span class="bool-val">false</span>);
+    <span class="kw">let </span>xinerama = toggle_options(<span class="string">&quot;xinerama&quot;</span>, <span class="string">&quot;Xinerama status&quot;</span>).fallback(<span class="bool-val">true</span>);
+    <span class="kw">let </span>turbo = short(<span class="string">&#39;t&#39;</span>)
+        .long(<span class="string">&quot;turbo&quot;</span>)
+        .help(<span class="string">&quot;Engage the turbo mode&quot;</span>)
+        .switch();
+    <span class="kw">let </span>extensions = extension().many();
+    <span class="macro">construct!</span>(Options {
+        turbo,
+        backing,
+        xinerama,
+        extensions,
+    })
+    .to_options()
+}
+
+<span class="kw">fn </span>main() {
+    <span class="macro">println!</span>(<span class="string">&quot;{:#?}&quot;</span>, options().run());
+}
+</code></pre></div>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p><code>xorg</code> takes parameters in a few different ways, notably as a long name starting with plus or
+minus with different defaults</p>
+<div class="example-wrap"><pre class="language-console"><code>% app -xinerama +backing
+Options { turbo: false, backing: true, xinerama: false, extensions: [] }
+</code></pre></div>
+<p>But also as <code>+ext name</code> and <code>-ext name</code> to enable or disable an extensions</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --turbo +ext banana -ext apple
+Options { turbo: true, backing: false, xinerama: true, extensions: [(&quot;banana&quot;, true), (&quot;apple&quot;, false)] }
+</code></pre></div>
+<p>While <code>bpaf</code> takes some effort to render the help even for custom stuff - you can always
+bypass it by hiding options and substituting your own with custom <code>header</code>/<code>footer</code>.</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [-t] [&lt;backing&gt;] [&lt;xinerama&gt;] (&lt;+ext&gt; | &lt;-ext&gt;)...
+
+Available positional items:
+    &lt;backing&gt;   Backing status
+    &lt;xinerama&gt;  Xinerama status
+    &lt;+ext&gt;      enable ext &lt;EXT&gt;
+    &lt;-ext&gt;      disable ext &lt;EXT&gt;
+
+Available options:
+    -t, --turbo  Engage the turbo mode
+    -h, --help   Prints help information
+</code></pre></div></details></div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

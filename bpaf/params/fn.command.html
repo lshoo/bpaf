@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Subcommand parser"><meta name="keywords" content="rust, rustlang, rust-lang, command"><title>command in bpaf::params - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../bpaf/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In bpaf::params</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Function <a href="../index.html">bpaf</a>::<wbr><a href="index.html">params</a>::<wbr><a class="fn" href="#">command</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../src/bpaf/params.rs.html#455-465">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><div class="item-decl"><pre class="rust"><code>pub fn command&lt;T&gt;(<br>&nbsp;&nbsp;&nbsp;&nbsp;name: &amp;'static <a class="primitive" href="https://doc.rust-lang.org/1.68.0/std/primitive.str.html">str</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;subparser: <a class="struct" href="../struct.OptionParser.html" title="struct bpaf::OptionParser">OptionParser</a>&lt;T&gt;<br>) -&gt; <a class="struct" href="struct.ParseCommand.html" title="struct bpaf::params::ParseCommand">ParseCommand</a>&lt;T&gt;<span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;T: 'static,</span></code></pre></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Subcommand parser</p>
+<p>Subcommands allow to use a totally independent parser inside a current one. Inner parser
+can have its own help message, description, version and so on. You can nest them arbitrarily
+too.</p>
+<p>Alternatively you can create commands using <a href="../struct.OptionParser.html#method.command"><code>command</code></a></p>
+<h2 id="important-restriction"><a href="#important-restriction">Important restriction</a></h2>
+<p>When parsing command arguments from command lines you should have parsers for all your
+named values and command before parsers for positional items. In derive API fields parsed as
+positional should be at the end of your <code>struct</code>/<code>enum</code>. Same rule applies
+to parsers with positional fields or commands inside: such parsers should go to the end as well.</p>
+<p>Use <a href="../struct.OptionParser.html#method.check_invariants"><code>check_invariants</code></a> in your test to ensure correctness.</p>
+<p>For example for non positional <code>non_pos</code> and a command <code>command</code> parsers</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>valid = <span class="macro">construct!</span>(non_pos(), command());
+<span class="kw">let </span>invalid = <span class="macro">construct!</span>(command(), non_pos());</code></pre></div>
+<p><strong><code>bpaf</code> panics during help generation unless if this restriction holds</strong></p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Cmd {
+    flag: bool,
+    arg: usize,
+}
+
+<span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    flag: bool,
+    cmd: Cmd,
+}
+
+<span class="kw">fn </span>cmd() -&gt; <span class="kw">impl </span>Parser&lt;Cmd&gt; {
+    <span class="kw">let </span>flag = long(<span class="string">&quot;flag&quot;</span>)
+        .help(<span class="string">&quot;This flag is specific to command&quot;</span>)
+        .switch();
+    <span class="kw">let </span>arg = long(<span class="string">&quot;arg&quot;</span>).argument::&lt;usize&gt;(<span class="string">&quot;ARG&quot;</span>);
+    <span class="macro">construct!</span>(Cmd { flag, arg })
+        .to_options()
+        .descr(<span class="string">&quot;Command to do something&quot;</span>)
+        .command(<span class="string">&quot;cmd&quot;</span>)
+        .help(<span class="string">&quot;Command to do something&quot;</span>)
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>flag = long(<span class="string">&quot;flag&quot;</span>)
+        .help(<span class="string">&quot;This flag is specific to the outer layer&quot;</span>)
+        .switch();
+    <span class="macro">construct!</span>(Options { flag, cmd() }).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(command)]
+</span><span class="doccomment">/// Command to do something
+</span><span class="kw">pub struct </span>Cmd {
+    <span class="doccomment">/// This flag is specific to command
+    </span>flag: bool,
+    arg: usize,
+}
+
+<span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="doccomment">/// This flag is specific to the outer layer
+    </span>flag: bool,
+    <span class="attr">#[bpaf(external)]
+    </span>cmd: Cmd,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>In this example there’s only one command and it is required, so is the argument inside of it</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --arg 42
+Options { flag: false, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>If you don’t specify this command - parsing will fail</p>
+<div class="example-wrap"><pre class="language-console"><code>% app 
+Expected COMMAND ..., pass --help for usage information
+</code></pre></div>
+<p>You can have the same flag names inside and outside of the command, but it might be confusing
+for the end user. This example enables the outer flag</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --flag cmd --arg 42
+Options { flag: true, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>And this one - both inside and outside</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --flag cmd --arg 42 --flag
+Options { flag: true, cmd: Cmd { flag: true, arg: 42 } }
+</code></pre></div>
+<p>And that’s the confusing part - unless you add context restrictions with
+<a href="../trait.Parser.html#method.adjacent"><code>adjacent</code></a> and parse command first - outer flag wins.
+So it’s best not to mix names on different levels</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --arg 42 --flag
+Options { flag: true, cmd: Cmd { flag: false, arg: 42 } }
+</code></pre></div>
+<p>Commands show up on both outer level help</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [--flag] COMMAND ...
+
+Available options:
+        --flag  This flag is specific to the outer layer
+    -h, --help  Prints help information
+
+Available commands:
+    cmd  Command to do something
+</code></pre></div>
+<p>As well as showing their own help</p>
+<div class="example-wrap"><pre class="language-console"><code>% app cmd --help
+Command to do something
+
+Usage: [--flag] --arg ARG
+
+Available options:
+        --flag       This flag is specific to command
+        --arg &lt;ARG&gt;
+    -h, --help       Prints help information
+</code></pre></div></details>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

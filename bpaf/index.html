@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Lightweight and flexible command line argument parser with derive and combinatoric style API"><meta name="keywords" content="rust, rustlang, rust-lang, bpaf"><title>bpaf - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../crates.js"></script><script defer src="../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../bpaf/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../bpaf/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Crate bpaf</a></h2><div class="sidebar-elems"><ul class="block"><li class="version">Version 0.7.9</li><li><a id="all-types" href="all.html">All Items</a></li></ul><section><ul class="block"><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li><li><a href="#derives">Derive Macros</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Crate <a class="mod" href="#">bpaf</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/bpaf/lib.rs.html#1-1698">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Lightweight and flexible command line argument parser with derive and combinatoric style API</p>
+<h2 id="derive-and-combinatoric-api"><a href="#derive-and-combinatoric-api">Derive and combinatoric API</a></h2>
+<p><code>bpaf</code> supports both combinatoric and derive APIs and it’s possible to mix and match both APIs
+at once. Both APIs provide access to mostly the same features, some things are more convenient
+to do with derive (usually less typing), some - with combinatoric (usually maximum flexibility
+and reducing boilerplate structs). In most cases using just one would suffice. Whenever
+possible APIs share the same keywords and overall structure. Documentation is shared and
+contains examples for both combinatoric and derive style.</p>
+<p><code>bpaf</code> supports dynamic shell completion for <code>bash</code>, <code>zsh</code>, <code>fish</code> and <code>elvish</code>.</p>
+<h2 id="quick-links"><a href="#quick-links">Quick links</a></h2>
+<ul>
+<li><a href="_derive_tutorial/index.html">Derive tutorial</a></li>
+<li><a href="_combinatoric_tutorial/index.html">Combinatoric tutorial</a></li>
+<li><a href="_unusual/index.html">Some very unusual cases</a></li>
+<li><a href="_applicative/index.html">Applicative functors? What is it all about</a></li>
+<li><a href="batteries/index.html">Batteries included</a></li>
+<li><a href="https://github.com/pacak/bpaf/discussions/categories/q-a">Q&amp;A</a></li>
+</ul>
+<h2 id="quick-start---combinatoric-and-derive-apis"><a href="#quick-start---combinatoric-and-derive-apis">Quick start - combinatoric and derive APIs</a></h2><details>
+<summary style="display: list-item;">Derive style API, click to expand</summary>
+<ol>
+<li>
+<p>Add <code>bpaf</code> under <code>[dependencies]</code> in your <code>Cargo.toml</code></p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+bpaf = { version = &quot;0.7&quot;, features = [&quot;derive&quot;] }
+</code></pre></div></li>
+<li>
+<p>Define a structure containing command line attributes and run generated function</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bpaf::Bpaf;
+
+<span class="attr">#[derive(Clone, Debug, Bpaf)]
+#[bpaf(options, version)]
+</span><span class="doccomment">/// Accept speed and distance, print them
+</span><span class="kw">struct </span>SpeedAndDistance {
+    <span class="doccomment">/// Speed in KPH
+    </span>speed: f64,
+    <span class="doccomment">/// Distance in miles
+    </span>distance: f64,
+}
+
+<span class="kw">fn </span>main() {
+    <span class="comment">// #[derive(Bpaf)] generates `speed_and_distance` function
+    </span><span class="kw">let </span>opts = speed_and_distance().run();
+    <span class="macro">println!</span>(<span class="string">&quot;Options: {:?}&quot;</span>, opts);
+}</code></pre></div>
+</li>
+<li>
+<p>Try to run the app</p>
+<div class="example-wrap"><pre class="language-console"><code>% very_basic --help
+Accept speed and distance, print them
+
+Usage: --speed ARG --distance ARG
+
+Available options:
+        --speed &lt;ARG&gt;     Speed in KPH
+        --distance &lt;ARG&gt;  Distance in miles
+    -h, --help            Prints help information
+    -V, --version         Prints version information
+
+% very_basic --speed 100
+Expected --distance ARG, pass --help for usage information
+
+% very_basic --speed 100 --distance 500
+Options: SpeedAndDistance { speed: 100.0, distance: 500.0 }
+
+% very_basic --version
+Version: 0.5.0 (taken from Cargo.toml by default)
+</code></pre></div></li>
+<li>
+<p>You can check the <a href="_derive_tutorial/index.html">derive tutorial</a> for more detailed information.</p>
+</li>
+</ol>
+</details>
+<details>
+<summary style="display: list-item;">Combinatoric style API, click to expand</summary>
+<ol>
+<li>
+<p>Add <code>bpaf</code> under <code>[dependencies]</code> in your <code>Cargo.toml</code></p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+bpaf = &quot;0.7&quot;
+</code></pre></div></li>
+<li>
+<p>Declare parsers for components, combine them and run it</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bpaf::{construct, long, Parser};
+<span class="attr">#[derive(Clone, Debug)]
+</span><span class="kw">struct </span>SpeedAndDistance {
+    <span class="doccomment">/// Dpeed in KPH
+    </span>speed: f64,
+    <span class="doccomment">/// Distance in miles
+    </span>distance: f64,
+}
+
+<span class="kw">fn </span>main() {
+    <span class="comment">// primitive parsers
+    </span><span class="kw">let </span>speed = long(<span class="string">&quot;speed&quot;</span>)
+        .help(<span class="string">&quot;Speed in KPG&quot;</span>)
+        .argument::&lt;f64&gt;(<span class="string">&quot;SPEED&quot;</span>);
+
+    <span class="kw">let </span>distance = long(<span class="string">&quot;distance&quot;</span>)
+        .help(<span class="string">&quot;Distance in miles&quot;</span>)
+        .argument::&lt;f64&gt;(<span class="string">&quot;DIST&quot;</span>);
+
+    <span class="comment">// parser containing information about both speed and distance
+    </span><span class="kw">let </span>parser = <span class="macro">construct!</span>(SpeedAndDistance { speed, distance });
+
+    <span class="comment">// option parser with metainformation attached
+    </span><span class="kw">let </span>speed_and_distance
+        = parser
+        .to_options()
+        .descr(<span class="string">&quot;Accept speed and distance, print them&quot;</span>);
+
+    <span class="kw">let </span>opts = speed_and_distance.run();
+    <span class="macro">println!</span>(<span class="string">&quot;Options: {:?}&quot;</span>, opts);
+}</code></pre></div>
+</li>
+<li>
+<p>Try to run the app</p>
+<div class="example-wrap"><pre class="language-console"><code>% very_basic --help
+Accept speed and distance, print them
+
+Usage: --speed ARG --distance ARG
+
+Available options:
+        --speed &lt;ARG&gt;     Speed in KPH
+        --distance &lt;ARG&gt;  Distance in miles
+    -h, --help            Prints help information
+    -V, --version         Prints version information
+
+% very_basic --speed 100
+Expected --distance ARG, pass --help for usage information
+
+% very_basic --speed 100 --distance 500
+Options: SpeedAndDistance { speed: 100.0, distance: 500.0 }
+
+% very_basic --version
+Version: 0.5.0 (taken from Cargo.toml by default)
+</code></pre></div></li>
+<li>
+<p>You can check the <a href="_combinatoric_tutorial/index.html">combinatoric tutorial</a> for more detailed information.</p>
+</li>
+</ol>
+</details>
+<h2 id="design-goals-flexibility-reusability-correctness"><a href="#design-goals-flexibility-reusability-correctness">Design goals: flexibility, reusability, correctness</a></h2>
+<p>Library allows to consume command line arguments by building up parsers for individual
+arguments and combining those primitive parsers using mostly regular Rust code plus one macro.
+For example it’s possible to take a parser that requires a single floating point number and
+transform it to a parser that takes several of them or takes it optionally so different
+subcommands or binaries can share a lot of the code:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// a regular function that doesn&#39;t depend on any context, you can export it
+// and share across subcommands and binaries
+</span><span class="kw">fn </span>speed() -&gt; <span class="kw">impl </span>Parser&lt;f64&gt; {
+    long(<span class="string">&quot;speed&quot;</span>)
+        .help(<span class="string">&quot;Speed in KPH&quot;</span>)
+        .argument::&lt;f64&gt;(<span class="string">&quot;SPEED&quot;</span>)
+}
+
+<span class="comment">// this parser accepts multiple `--speed` flags from a command line when used,
+// collecting results into a vector
+</span><span class="kw">fn </span>multiple_args() -&gt; <span class="kw">impl </span>Parser&lt;Vec&lt;f64&gt;&gt; {
+    speed().many()
+}
+
+<span class="comment">// this parser checks if `--speed` is present and uses value of 42.0 if it&#39;s not
+</span><span class="kw">fn </span>with_fallback() -&gt; <span class="kw">impl </span>Parser&lt;f64&gt; {
+    speed().fallback(<span class="number">42.0</span>)
+}</code></pre></div>
+<p>At any point you can apply additional validation or fallback values in terms of current parsed
+state of each subparser and you can have several stages as well:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Clone, Debug)]
+</span><span class="kw">struct </span>Speed(f64);
+<span class="kw">fn </span>speed() -&gt; <span class="kw">impl </span>Parser&lt;Speed&gt; {
+    long(<span class="string">&quot;speed&quot;</span>)
+        .help(<span class="string">&quot;Speed in KPH&quot;</span>)
+        .argument::&lt;f64&gt;(<span class="string">&quot;SPEED&quot;</span>)
+
+        <span class="comment">// You can perform additional validation with `parse` and `guard` functions
+        // in as many steps as required.
+        // Before and after next two applications the type is still `impl Parser&lt;f64&gt;`
+        </span>.guard(|<span class="kw-2">&amp;</span>speed| speed &gt;= <span class="number">0.0</span>, <span class="string">&quot;You need to buy a DLC to move backwards&quot;</span>)
+        .guard(|<span class="kw-2">&amp;</span>speed| speed &lt;= <span class="number">100.0</span>, <span class="string">&quot;You need to buy a DLC to break the speed limits&quot;</span>)
+
+        <span class="comment">// You can transform contained values, next line gives `impl Parser&lt;Speed&gt;` as a result
+        </span>.map(|speed| Speed(speed))
+}</code></pre></div>
+<p>Library follows <strong>parse, don’t validate</strong> approach to validation when possible. Usually you parse
+your values just once and get the results as a Rust struct/enum with strict types rather than a
+stringly typed hashmap with stringly typed values in both combinatoric and derive APIs.</p>
+<h2 id="design-goals-restrictions"><a href="#design-goals-restrictions">Design goals: restrictions</a></h2>
+<p>The main restricting library sets is that you can’t use parsed values (but not the fact that
+parser succeeded or failed) to decide how to parse subsequent values. In other words parsers
+don’t have the monadic strength, only the applicative one - for more detailed explanation see
+<a href="_applicative/index.html">Applicative functors? What is it all about</a>.</p>
+<p>To give an example, you can implement this description:</p>
+<blockquote>
+<p>Program takes one of <code>--stdout</code> or <code>--file</code> flag to specify the output target, when it’s <code>--file</code>
+program also requires <code>-f</code> attribute with the filename</p>
+</blockquote>
+<p>But not this one:</p>
+<blockquote>
+<p>Program takes an <code>-o</code> attribute with possible values of <code>'stdout'</code> and <code>'file'</code>, when it’s <code>'file'</code>
+program also requires <code>-f</code> attribute with the filename</p>
+</blockquote>
+<p>This set of restrictions allows <code>bpaf</code> to extract information about the structure of the computations
+to generate help, dynamic completion and overall results in less confusing enduser experience</p>
+<p><code>bpaf</code> performs no parameter names validation, in fact having multiple parameters
+with the same name is fine and you can combine them as alternatives and performs no fallback
+other than <a href="trait.Parser.html#method.fallback"><code>fallback</code></a>. You need to pay attention to the order of the
+alternatives inside the macro: parser that consumes the left most available argument on a
+command line wins, if this is the same - left most parser wins. So to parse a parameter
+<code>--test</code> that can be both <a href="params/struct.NamedArg.html#method.switch"><code>switch</code></a> and <a href="params/struct.NamedArg.html#method.argument"><code>argument</code></a> you
+should put the argument one first.</p>
+<p>You must place <a href="fn.positional.html" title="positional"><code>positional</code></a> items at the end of a structure in derive API or consume them
+as last arguments in derive API.</p>
+<h2 id="dynamic-shell-completion"><a href="#dynamic-shell-completion">Dynamic shell completion</a></h2>
+<p><code>bpaf</code> implements shell completion to allow to automatically fill in not only flag and command
+names, but also argument and positional item values.</p>
+<ol>
+<li>
+<p>Enable <code>autocomplete</code> feature:</p>
+<div class="example-wrap"><pre class="language-toml"><code>bpaf = { version = &quot;0.7&quot;, features = [&quot;autocomplete&quot;] }
+</code></pre></div></li>
+<li>
+<p>Decorate <a href="params/struct.NamedArg.html#method.argument"><code>argument</code></a> and <a href="fn.positional.html" title="positional"><code>positional</code></a> parsers with
+<a href="trait.Parser.html#method.complete"><code>complete</code></a> to autocomplete argument values</p>
+</li>
+<li>
+<p>Depending on your shell generate appropriate completion file and place it to whereever your
+shell is going to look for it, name of the file should correspond in some way to name of
+your program. Consult manual for your shell for the location and named conventions:</p>
+<ol>
+<li><strong>bash</strong>: for the first <code>bpaf</code> completion you need to install the whole script<div class="example-wrap"><pre class="language-console"><code>$ your_program --bpaf-complete-style-bash &gt;&gt; ~/.bash_completion
+</code></pre></div>but since the script doesn’t depend on a program name - it’s enough to do this for
+each next program<div class="example-wrap"><pre class="language-console"><code>echo &quot;complete -F _bpaf_dynamic_completion your_program&quot; &gt;&gt; ~/.bash_completion
+</code></pre></div></li>
+<li><strong>zsh</strong>: note <code>_</code> at the beginning of the filename<div class="example-wrap"><pre class="language-console"><code>$ your_program --bpaf-complete-style-zsh &gt; ~/.zsh/_your_program
+</code></pre></div></li>
+<li><strong>fish</strong><div class="example-wrap"><pre class="language-console"><code>$ your_program --bpaf-complete-style-fish &gt; ~/.config/fish/completions/your_program.fish
+</code></pre></div></li>
+<li><strong>elvish</strong> - not sure where to put it, documentation is a bit cryptic<div class="example-wrap"><pre class="language-console"><code>$ your_program --bpaf-complete-style-elvish
+</code></pre></div></li>
+</ol>
+</li>
+<li>
+<p>Restart your shell - you need to done it only once or optionally after bpaf major version
+upgrade: generated completion files contain only instructions how to ask your program for
+possible completions and don’t change even if options are different.</p>
+</li>
+<li>
+<p>Generated scripts rely on your program being accessible in $PATH</p>
+</li>
+</ol>
+<h2 id="design-non-goals-performance"><a href="#design-non-goals-performance">Design non goals: performance</a></h2>
+<p>Library aims to optimize for flexibility, reusability and compilation time over runtime
+performance which means it might perform some additional clones, allocations and other less
+optimal things. In practice unless you are parsing tens of thousands of different parameters
+and your app exits within microseconds - this won’t affect you. That said - any actual
+performance related problems with real world applications is a bug.</p>
+<h2 id="more-examples"><a href="#more-examples">More examples</a></h2>
+<p>You can find a more examples here: <a href="https://github.com/pacak/bpaf/tree/master/examples">https://github.com/pacak/bpaf/tree/master/examples</a></p>
+<p>They’re usually documented or at least contain an explanation to important bits and you can see
+how they work by cloning the repo and running</p>
+<div class="example-wrap"><pre class="language-shell"><code>$ cargo run --example example_name
+</code></pre></div><h2 id="testing-your-own-parsers"><a href="#testing-your-own-parsers">Testing your own parsers</a></h2>
+<p>You can test your own parsers to maintain compatibility or simply checking expected output
+with <a href="struct.OptionParser.html#method.run_inner"><code>run_inner</code></a></p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options)]
+</span><span class="kw">pub struct </span>Options {
+    <span class="kw">pub </span>user: String
+}
+
+<span class="attr">#[test]
+</span><span class="kw">fn </span>test_my_options() {
+    <span class="kw">let </span>help = options()
+        .run_inner(Args::from(<span class="kw-2">&amp;</span>[<span class="string">&quot;--help&quot;</span>]))
+        .unwrap_err()
+        .unwrap_stdout();
+    <span class="kw">let </span>expected_help = <span class="string">&quot;\
+Usage --user &lt;ARG&gt;
+&lt;skip&gt;
+&quot;</span>;
+
+    <span class="macro">assert_eq!</span>(help, expected_help);
+}</code></pre></div>
+<h2 id="cargo-features"><a href="#cargo-features">Cargo features</a></h2>
+<ul>
+<li>
+<p><code>derive</code>: adds a dependency on <code>bpaf_derive</code> crate and reexport <code>Bpaf</code> derive macro. You
+need to enable it to use derive API. Disabled by default.</p>
+</li>
+<li>
+<p><code>extradocs</code>: used internally to include tutorials to <a href="https://docs.rs/bpaf">https://docs.rs/bpaf</a>, no reason to
+enable it for local development unless you want to build your own copy of the documentation
+(<a href="https://github.com/rust-lang/cargo/issues/8905">https://github.com/rust-lang/cargo/issues/8905</a>). Disabled by default.</p>
+</li>
+<li>
+<p><code>batteries</code>: helpers implemented with public <code>bpaf</code> API. Disabled by default.</p>
+</li>
+<li>
+<p><code>autocomplete</code>: enables support for shell autocompletion. Disabled by default.</p>
+</li>
+<li>
+<p><code>bright-color</code>, <code>dull-color</code>: use more colors when printing <code>--help</code> and such. Enabling
+either color feature adds some extra dependencies and might raise MRSV. If you are planning
+to use this feature in a published app - it’s best to expose them as feature flags:</p>
+<div class="example-wrap"><pre class="language-toml"><code>[features]
+bright-color = [&quot;bpaf/bright-color&quot;]
+dull-color = [&quot;bpaf/dull-color&quot;]
+</code></pre></div>
+<p>Disabled by default.</p>
+</li>
+<li>
+<p><code>manpage</code>: generate man page from help declaration, see <a href="struct.OptionParser.html#method.as_manpage" title="OptionParser::as_manpage"><code>OptionParser::as_manpage</code></a>. Disabled by default.</p>
+</li>
+</ul>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="_applicative/index.html" title="bpaf::_applicative mod">_applicative</a></div><div class="item-right docblock-short">Applicative functors? What is it about?</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="_combinatoric_tutorial/index.html" title="bpaf::_combinatoric_tutorial mod">_combinatoric_tutorial</a></div><div class="item-right docblock-short">Using the library in combinatoric style</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="_derive_tutorial/index.html" title="bpaf::_derive_tutorial mod">_derive_tutorial</a></div><div class="item-right docblock-short">Using the library in derive style</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="_unusual/index.html" title="bpaf::_unusual mod">_unusual</a></div><div class="item-right docblock-short">Some of the more unusual examples</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="batteries/index.html" title="bpaf::batteries mod">batteries</a></div><div class="item-right docblock-short">Batteries included - helpful parsers that use only public API</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="params/index.html" title="bpaf::params mod">params</a></div><div class="item-right docblock-short">Tools to define primitive parsers</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="parsers/index.html" title="bpaf::parsers mod">parsers</a></div><div class="item-right docblock-short">This module exposes parsers that accept further configuration with builder pattern</div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.construct.html" title="bpaf::construct macro">construct</a></div><div class="item-right docblock-short">Compose several parsers to produce a single result</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Args.html" title="bpaf::Args struct">Args</a></div><div class="item-right docblock-short">All currently present command line parameters, use it for unit tests and manual parsing</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.OptionParser.html" title="bpaf::OptionParser struct">OptionParser</a></div><div class="item-right docblock-short">Ready to run <a href="trait.Parser.html" title="Parser"><code>Parser</code></a> with additional information attached</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.CompleteDecor.html" title="bpaf::CompleteDecor enum">CompleteDecor</a></div><div class="item-right docblock-short">Various complete options decorations</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ParseFailure.html" title="bpaf::ParseFailure enum">ParseFailure</a></div><div class="item-right docblock-short">Unsuccessful command line parsing outcome, use it for unit tests</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.Section.html" title="bpaf::Section enum">Section</a></div><div class="item-right docblock-short">Manual page section</div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.ShellComp.html" title="bpaf::ShellComp enum">ShellComp</a></div><div class="item-right docblock-short">Shell specific completion</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Parser.html" title="bpaf::Parser trait">Parser</a></div><div class="item-right docblock-short">Simple or composed argument parser</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.any.html" title="bpaf::any fn">any</a></div><div class="item-right docblock-short">Take next unconsumed item on the command line as raw <a href="https://doc.rust-lang.org/1.68.0/alloc/string/struct.String.html" title="String"><code>String</code></a> or <a href="https://doc.rust-lang.org/1.68.0/std/ffi/os_str/struct.OsString.html" title="OsString"><code>OsString</code></a></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.command.html" title="bpaf::command fn">command</a></div><div class="item-right docblock-short">Subcommand parser</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.env.html" title="bpaf::env fn">env</a></div><div class="item-right docblock-short">Environment variable fallback</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.fail.html" title="bpaf::fail fn">fail</a></div><div class="item-right docblock-short">Fail with a fixed error message</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.long.html" title="bpaf::long fn">long</a></div><div class="item-right docblock-short">A flag/switch/argument that has a long name</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.positional.html" title="bpaf::positional fn">positional</a></div><div class="item-right docblock-short">Positional argument in utf8 (<code>String</code>) encoding</div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.pure.html" title="bpaf::pure fn">pure</a></div><div class="item-right docblock-short">Wrap a value into a <code>Parser</code></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.pure_with.html" title="bpaf::pure_with fn">pure_with</a></div><div class="item-right docblock-short">Wrap a calculated value into a <code>Parser</code></div></div><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.short.html" title="bpaf::short fn">short</a></div><div class="item-right docblock-short">A flag/switch/argument that has a short name</div></div></div><h2 id="derives" class="small-section-header"><a href="#derives">Derive Macros</a></h2><div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="derive" href="derive.Bpaf.html" title="bpaf::Bpaf derive">Bpaf</a></div><div class="item-right docblock-short">Derive macro for bpaf command line parser</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

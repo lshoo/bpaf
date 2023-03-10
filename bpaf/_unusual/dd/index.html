@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`dd(1)`: `dd if=/dev/zero of=/dev/null bs=1000`"><meta name="keywords" content="rust, rustlang, rust-lang, dd"><title>bpaf::_unusual::dd - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module dd</a></h2><div class="sidebar-elems"></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../../index.html">bpaf</a>::<wbr><a href="../index.html">_unusual</a>::<wbr><a class="mod" href="#">dd</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../../src/bpaf/_unusual.rs.html#16">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h3 id="dd1-dd-ifdevzero-ofdevnull-bs1000"><a href="#dd1-dd-ifdevzero-ofdevnull-bs1000"><code>dd(1)</code>: <code>dd if=/dev/zero of=/dev/null bs=1000</code></a></h3>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="doccomment">//! This is not a typical bpaf usage, but you should be able to replicate command line used by dd
+
+</span><span class="kw">use </span>bpaf::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::str::FromStr;
+
+<span class="attr">#[derive(Debug, Clone)]
+#[allow(dead_code)]
+</span><span class="kw">pub struct </span>Options {
+    magic: bool,
+    in_file: String,
+    out_file: String,
+    block_size: usize,
+}
+
+<span class="kw">fn </span>tag&lt;T&gt;(name: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, meta: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, help: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str) -&gt; <span class="kw">impl </span>Parser&lt;T&gt;
+<span class="kw">where
+    </span>T: FromStr,
+    &lt;T <span class="kw">as </span>std::str::FromStr&gt;::Err: std::fmt::Display,
+{
+    <span class="comment">// it is possible to parse OsString here and strip the prefix with os_str_bytes or a similar
+    // crate
+    </span>any::&lt;String&gt;(meta)
+        .help(help)
+        .parse::&lt;<span class="kw">_</span>, <span class="kw">_</span>, String&gt;(<span class="kw">move </span>|s| <span class="kw">match </span>s.strip_prefix(name) {
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(<span class="string">&quot;Wrong tag&quot;</span>.to_string()),
+            <span class="prelude-val">Some</span>(body) =&gt; T::from_str(body).map_err(|e| e.to_string()),
+        })
+        .anywhere()
+}
+
+<span class="kw">fn </span>in_file() -&gt; <span class="kw">impl </span>Parser&lt;String&gt; {
+    tag::&lt;String&gt;(<span class="string">&quot;if=&quot;</span>, <span class="string">&quot;if=FILE&quot;</span>, <span class="string">&quot;read from FILE instead of stdin&quot;</span>).fallback(String::from(<span class="string">&quot;-&quot;</span>))
+}
+
+<span class="kw">fn </span>out_file() -&gt; <span class="kw">impl </span>Parser&lt;String&gt; {
+    tag::&lt;String&gt;(<span class="string">&quot;of=&quot;</span>, <span class="string">&quot;of=FILE&quot;</span>, <span class="string">&quot;write to FILE instead of stdout&quot;</span>).fallback(String::from(<span class="string">&quot;-&quot;</span>))
+}
+
+<span class="kw">fn </span>block_size() -&gt; <span class="kw">impl </span>Parser&lt;usize&gt; {
+    <span class="comment">// it is possible to parse notation used by dd itself as well, using only ints for simplicity
+    </span>tag::&lt;usize&gt;(
+        <span class="string">&quot;bs=&quot;</span>,
+        <span class="string">&quot;bs=SIZE&quot;</span>,
+        <span class="string">&quot;read/write SIZE blocks at once instead of 512&quot;</span>,
+    )
+    .fallback(<span class="number">512</span>)
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>magic = long(<span class="string">&quot;magic&quot;</span>).switch();
+    <span class="macro">construct!</span>(Options {
+        magic,
+        in_file(),
+        out_file(),
+        block_size(),
+    })
+    .to_options()
+}
+
+<span class="kw">fn </span>main() {
+    <span class="macro">println!</span>(<span class="string">&quot;{:#?}&quot;</span>, options().run());
+}
+</code></pre></div>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p><code>dd</code> takes parameters in <code>name=value</code> shape</p>
+<div class="example-wrap"><pre class="language-console"><code>% app if=/dev/zero of=file bs=10000
+Options { magic: false, in_file: &quot;/dev/zero&quot;, out_file: &quot;file&quot;, block_size: 10000 }
+</code></pre></div>
+<p>Usual properties about ordering holds, you can also mix them with regular options</p>
+<div class="example-wrap"><pre class="language-console"><code>% app if=/dev/zero of=file bs=10000 --magic
+Options { magic: true, in_file: &quot;/dev/zero&quot;, out_file: &quot;file&quot;, block_size: 10000 }
+</code></pre></div>
+<p>Fallback works as expected</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --magic bs=42
+Options { magic: true, in_file: &quot;-&quot;, out_file: &quot;-&quot;, block_size: 42 }
+</code></pre></div>
+<p>Best effort to generate help, but you can always customize it further</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: [--magic] [&lt;if=FILE&gt;] [&lt;of=FILE&gt;] [&lt;bs=SIZE&gt;]
+
+Available positional items:
+    &lt;if=FILE&gt;  read from FILE instead of stdin
+    &lt;of=FILE&gt;  write to FILE instead of stdout
+    &lt;bs=SIZE&gt;  read/write SIZE blocks at once instead of 512
+
+Available options:
+        --magic
+    -h, --help   Prints help information
+</code></pre></div></details></div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>

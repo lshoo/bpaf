@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Implementing cargo commands"><meta name="keywords" content="rust, rustlang, rust-lang, cargohelper"><title>bpaf::_unusual::cargohelper - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-93196c7a1c3542a8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-4743e13df3dfe8c4.css"><link rel="stylesheet" disabled href="../../../static.files/dark-0e1b889528bd466b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-65289d5d067c7c66.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/main-3367e395607fafc1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../bpaf/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module cargohelper</a></h2><div class="sidebar-elems"></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../../index.html">bpaf</a>::<wbr><a href="../index.html">_unusual</a>::<wbr><a class="mod" href="#">cargohelper</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../../../src/bpaf/_unusual.rs.html#74">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><h2 id="implementing-cargo-commands"><a href="#implementing-cargo-commands">Implementing cargo commands</a></h2>
+<p>With <a href="../../batteries/fn.cargo_helper.html" title="cargo_helper"><code>cargo_helper</code></a> you can use your application as cargo command</p>
+<details>
+<summary style="display: list-item;">Combinatoric usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone)]
+</span><span class="kw">pub struct </span>Options {
+    argument: usize,
+    switch: bool,
+}
+
+<span class="kw">pub fn </span>options() -&gt; OptionParser&lt;Options&gt; {
+    <span class="kw">let </span>argument = long(<span class="string">&quot;argument&quot;</span>)
+        .help(<span class="string">&quot;An argument&quot;</span>)
+        .argument::&lt;usize&gt;(<span class="string">&quot;ARG&quot;</span>);
+    <span class="kw">let </span>switch = short(<span class="string">&#39;s&#39;</span>).help(<span class="string">&quot;A switch&quot;</span>).switch();
+    <span class="kw">let </span>options = <span class="macro">construct!</span>(Options { argument, switch });
+
+    cargo_helper(<span class="string">&quot;pretty&quot;</span>, options).to_options()
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Derive usage</summary>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attr">#[derive(Debug, Clone, Bpaf)]
+#[bpaf(options(<span class="string">&quot;pretty&quot;</span>))]
+</span><span class="kw">pub struct </span>Options {
+    <span class="doccomment">/// An argument
+    </span>argument: usize,
+    <span class="doccomment">/// A switch
+    </span><span class="attr">#[bpaf(short)]
+    </span>switch: bool,
+}</code></pre></div>
+</details>
+<details>
+<summary style="display: list-item;">Examples</summary>
+<p>Let’s say the goal is to parse an argument and a switch:</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --argument 15
+Options { argument: 15, switch: false }
+</code></pre></div>
+<p>But when used as a <code>cargo</code> subcommand, cargo will also pass the command name, this example
+uses <em>wrong</em> subcommand name to bypass the helper and show how it would look without it</p>
+<div class="example-wrap"><pre class="language-console"><code>% app wrong --argument 15
+No such command: `wrong`, did you mean `-s`?
+</code></pre></div>
+<p>When used with the right command - helper simply consumes it</p>
+<div class="example-wrap"><pre class="language-console"><code>% app pretty --argument 42 -s
+Options { argument: 42, switch: true }
+</code></pre></div>
+<p>And it doesn’t show up in <code>--help</code> so not to confuse users</p>
+<div class="example-wrap"><pre class="language-console"><code>% app --help
+Usage: --argument ARG [-s]
+
+Available options:
+        --argument &lt;ARG&gt;  An argument
+    -s                    A switch
+    -h, --help            Prints help information
+</code></pre></div></details></div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="bpaf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0 (2c8cc3432 2023-03-06)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-c3c521c753752a1a.js" data-settings-css="settings-08ddfdda51b8ee2e.css" ></div></body></html>
